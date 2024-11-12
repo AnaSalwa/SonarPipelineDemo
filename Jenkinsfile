@@ -17,19 +17,18 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-
-		script {
+                script {
                     // Définir le chemin de SonarQube Scanner
                     def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
 
-                   withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube
-                    withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'SONAR_TOKEN')]) {
-                        bat "${scannerHome}\\bin\\sonar-scanner.bat \
-                            -Dsonar.projectKey=TestPipeline \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=%SONAR_TOKEN%"
-
+                    withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube configuré dans Jenkins
+                        withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'SONAR_TOKEN')]) {
+                            bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" " +
+                                "-Dsonar.projectKey=TestPipeline " +
+                                "-Dsonar.sources=. " +
+                                "-Dsonar.host.url=http://localhost:9000 " +
+                                "-Dsonar.login=%SONAR_TOKEN%"
+                        }
                     }
                 }
             }
