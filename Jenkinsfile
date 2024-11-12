@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        // Utilisez une variable d'environnement sécurisée pour l'URL de SonarQube
+        SONAR_HOST_URL = 'http://localhost:9000'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -21,16 +26,16 @@ pipeline {
                     // Définir le chemin de SonarQube Scanner
                     def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
 
-                    withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube configuré dans Jenkins
-                        
+                    // Utilisation de withCredentials pour injecter le jeton SonarQube de manière sécurisée
+                    withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'SONAR_TOKEN')]) { 
+                        withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube configuré dans Jenkins
                             bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" " +
                                 "-Dsonar.projectKey=TestPipeline " +
                                 "-Dsonar.sources=. " +
-                                "-Dsonar.host.url=http://localhost:9000 " +
-                                "-Dsonar.login=sqa_112d17c5e3c02ec863d1ebc3717556c6745644d3" +
+                                "-Dsonar.host.url=${SONAR_HOST_URL} " +
+                                "-Dsonar.login=${SONAR_TOKEN} " + // Utilisation du jeton sécurisé
                                 "-Dsonar.java.binaries=./target/classes"
-
-                        
+                        }
                     }
                 }
             }
