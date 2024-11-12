@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "anasalwa/sonarpipelinedemo:latest"
         DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'
-        SONAR_HOST_URL = 'http://localhost:9000'  // Variable d'environnement pour l'URL de SonarQube
+        SONAR_HOST_URL = 'http://localhost:9000' // Variable d'environnement pour l'URL de SonarQube
     }
 
     stages {
@@ -21,34 +21,36 @@ pipeline {
             }
         }
 
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         script {
-        //             // Définir le chemin de SonarQube Scanner
-        //             def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        /*
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // Définir le chemin de SonarQube Scanner
+                    def scannerHome = tool(name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation')
 
-        //             // Utilisation de withCredentials pour injecter le jeton SonarQube de manière sécurisée
-        //             withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'SONAR_TOKEN')]) { 
-        //                 withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube configuré dans Jenkins
-        //                     bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" " +
-        //                         "-Dsonar.projectKey=TestPipeline " +
-        //                         "-Dsonar.sources=. " +
-        //                         "-Dsonar.host.url=${SONAR_HOST_URL} " +
-        //                         "-Dsonar.login=${SONAR_TOKEN} " + // Utilisation du jeton sécurisé
-        //                         "-Dsonar.java.binaries=./target/classes"
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                    // Utilisation de withCredentials pour injecter le jeton SonarQube de manière sécurisée
+                    withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'SONAR_TOKEN')]) {
+                        withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube configuré dans Jenkins
+                            bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" " +
+                                "-Dsonar.projectKey=TestPipeline " +
+                                "-Dsonar.sources=. " +
+                                "-Dsonar.host.url=${SONAR_HOST_URL} " +
+                                "-Dsonar.login=${SONAR_TOKEN} " + // Utilisation du jeton sécurisé
+                                "-Dsonar.java.binaries=./target/classes"
+                        }
+                    }
+                }
+            }
+        }
 
-        // stage('Quality Gate') {
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        */
 
         stage('Build Docker Image') {
             steps {
