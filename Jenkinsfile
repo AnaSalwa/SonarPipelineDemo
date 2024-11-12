@@ -17,6 +17,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
+
                 script {
                     def scannerHome = tool 'sonar-scanner'
                     withSonarQubeEnv('SonarQube') {
@@ -28,6 +29,21 @@ pipeline {
                             -Dsonar.sources=./src ^
                             -Dsonar.java.binaries=./target/classes
                         """
+                    }
+                }
+
+		script {
+                    // Définir le chemin de SonarQube Scanner
+                    def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+
+                   withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube
+                    withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'SONAR_TOKEN')]) {
+                        bat "${scannerHome}\\bin\\sonar-scanner.bat \
+                            -Dsonar.projectKey=TestPipeline \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.login=%SONAR_TOKEN%"
+
                     }
                 }
             }
