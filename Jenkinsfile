@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/aynuod/SonarPipelineDemo.git', branch: 'main'
+                git url: 'https://github.com/AnaSalwa/SonarPipelineDemo.git', branch: 'main'
             }
         }
 
@@ -22,9 +22,9 @@ pipeline {
                     withSonarQubeEnv('SonarQube') {
                         bat """
                             ${scannerHome}\\bin\\sonar-scanner.bat ^
-                            -Dsonar.projectKey=stage ^
+                            -Dsonar.projectKey=TestPipeline ^
                             -Dsonar.host.url=http://localhost:9000 ^
-                            -Dsonar.login=sqa_17ad9a4f6cd4022e49fdd58611ce3e18488859c8 ^
+                            -Dsonar.login=sqa_112d17c5e3c02ec863d1ebc3717556c6745644d3 ^
                             -Dsonar.sources=./src ^
                             -Dsonar.java.binaries=./target/classes
                         """
