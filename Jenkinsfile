@@ -1,13 +1,10 @@
 pipeline {
-    agent any   
+    agent any
+    
     environment {
         DOCKER_IMAGE = "anasalwa/sonarpipelinedemo:latest"
         DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'
-
-
-    environment {
-        // Utilisez une variable d'environnement sécurisée pour l'URL de SonarQube
-        SONAR_HOST_URL = 'http://localhost:9000'
+        SONAR_HOST_URL = 'http://localhost:9000'  // Variable d'environnement pour l'URL de SonarQube
     }
 
     stages {
@@ -53,16 +50,15 @@ pipeline {
             }
         }
 
-         stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Ajout de logging
+                    // Ajout de logging pour suivre la construction de l'image Docker
                     echo "Starting Docker build..."
                     bat "docker build --no-cache -t ${DOCKER_IMAGE} ."
                     echo "Docker build completed"
                 }
             }
         }
-
     }
 }
