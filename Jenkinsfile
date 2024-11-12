@@ -22,7 +22,7 @@ pipeline {
                     def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
 
                     withSonarQubeEnv('SonaqubeServer') { // Remplacez par le nom de votre serveur SonarQube configuré dans Jenkins
-                        withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'SONAR_TOKEN')]) {
+                        
                             bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" " +
                                 "-Dsonar.projectKey=TestPipeline " +
                                 "-Dsonar.sources=. " +
@@ -30,7 +30,7 @@ pipeline {
                                 "-Dsonar.login=sqa_112d17c5e3c02ec863d1ebc3717556c6745644d3" +
                                 "-Dsonar.java.binaries=./target/classes"
 
-                        }
+                        
                     }
                 }
             }
