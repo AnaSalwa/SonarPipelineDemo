@@ -27,7 +27,7 @@ pipeline {
                                 "-Dsonar.projectKey=TestPipeline " +
                                 "-Dsonar.sources=. " +
                                 "-Dsonar.host.url=http://localhost:9000 " +
-                                "-Dsonar.login=%SONAR_TOKEN%" +
+                                "-Dsonar.login=sqa_112d17c5e3c02ec863d1ebc3717556c6745644d3" +
                                 "-Dsonar.java.binaries=./target/classes"
 
                         }
