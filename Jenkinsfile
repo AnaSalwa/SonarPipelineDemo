@@ -18,20 +18,6 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
 
-                script {
-                    def scannerHome = tool 'sonar-scanner'
-                    withSonarQubeEnv('SonarQube') {
-                        bat """
-                            ${scannerHome}\\bin\\sonar-scanner.bat ^
-                            -Dsonar.projectKey=TestPipeline ^
-                            -Dsonar.host.url=http://localhost:9000 ^
-                            -Dsonar.login=sqa_112d17c5e3c02ec863d1ebc3717556c6745644d3 ^
-                            -Dsonar.sources=./src ^
-                            -Dsonar.java.binaries=./target/classes
-                        """
-                    }
-                }
-
 		script {
                     // Définir le chemin de SonarQube Scanner
                     def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
